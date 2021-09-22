@@ -1,3 +1,9 @@
+from pydantic import BaseModel
+
+class PaymentRequest(BaseModel):
+    amount_to_deduct: int
+
+
 class CreditCard():
 
     def __init__(self, budget, card_id):
