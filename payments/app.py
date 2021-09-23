@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .creditcard import CreditCardRepo, PaymentRequest
+from .creditcard import CreditCardObject, CreditCardRepo, PaymentRequest
 import graphene
 from fastapi import FastAPI
 from starlette.graphql import GraphQLApp
@@ -16,6 +16,7 @@ class Person(ObjectType):
 class QueryPerson(ObjectType):
     me = Field(Person, name=graphene.String())
     my_best_friend = Field(Person)
+    all_creditcards = graphene.List(CreditCardObject)
 
     def resolve_me(parent, info, name="Luke"):
         # always pass an object for `me` field
@@ -26,7 +27,7 @@ class QueryPerson(ObjectType):
         return {"first_name": "R2", "last_name": "D2"}
 
     def resolve_all_creditcards(parent, info):
-        return
+        return CreditCardRepo().get_all_cards()
 
 class Query(graphene.ObjectType):
     hello = graphene.String(name=graphene.String(default_value="stranger"))

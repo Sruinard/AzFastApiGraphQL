@@ -34,6 +34,7 @@ def test_query_person_data():
         {
             me(name: "Stef") { firstName lastName}
             myBestFriend { firstName lastName }
+            allCreditcards { budget }
         }
     ''')
     # With default resolvers we can resolve attributes from an object..
@@ -41,3 +42,5 @@ def test_query_person_data():
 
     # With default resolvers, we can also resolve keys from a dictionary..
     assert result.data["myBestFriend"] == {"firstName": "R2", "lastName": "D2"}
+
+    assert result.data["allCreditcards"] == [{"budget": 500}, {"budget": 900}, {"budget": 200}]
