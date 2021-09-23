@@ -25,6 +25,9 @@ class QueryPerson(ObjectType):
         # always pass a dictionary for `my_best_fiend_field`
         return {"first_name": "R2", "last_name": "D2"}
 
+    def resolve_all_creditcards(parent, info):
+        return
+
 class Query(graphene.ObjectType):
     hello = graphene.String(name=graphene.String(default_value="stranger"))
 

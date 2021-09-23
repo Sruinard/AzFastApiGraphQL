@@ -1,4 +1,12 @@
 from pydantic import BaseModel
+from graphene import ObjectType, String, ID, Int
+
+class CreditCardObject(ObjectType):
+    budget = Int()
+    card_id = ID()
+
+    def deduct(self, amount_to_deduct):
+        self.budget = self.budget - amount_to_deduct
 
 class PaymentRequest(BaseModel):
     amount_to_deduct: int
@@ -20,8 +28,8 @@ class CreditCardRepo:
 
     def get_item_by_card_id(self, card_id):
         card_data = [item for item in self.ITEMS if item.get("card_id") == card_id][0]
-        return CreditCard(**card_data)
+        return CreditCardObject(**card_data)
     
     def get_all_cards(self):
-        return [CreditCard(**card_data) for card_data in self.ITEMS]
+        return [CreditCardObject(**card_data) for card_data in self.ITEMS]
          
