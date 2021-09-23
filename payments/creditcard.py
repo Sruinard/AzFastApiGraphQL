@@ -16,21 +16,12 @@ class CreditCard():
 
 class CreditCardRepo:
 
-    ITEMS = {
-        'a': {
-            'budget': 500,
-            'card_id': 'a'
-        },
-        'b': {
-            'budget': 900,
-            'card_id': 'b'
-        }
-    }
+    ITEMS = [dict(card_id=card_id, budget=budget) for card_id, budget in list(zip(["a", "b", "c"], [500, 900, 200]))]
 
     def get_item_by_card_id(self, card_id):
-        card_data = self.ITEMS.get(card_id, {
-            'budget': 200,
-            'card_id': 'fake_id'
-        })
+        card_data = [item for item in self.ITEMS if item.get("card_id") == card_id][0]
         return CreditCard(**card_data)
+    
+    def get_all_cards(self):
+        return [CreditCard(**card_data) for card_data in self.ITEMS]
          
