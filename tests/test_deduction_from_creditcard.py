@@ -30,13 +30,13 @@ def test_graph_endpoint():
 
 def test_query_person_data():
     schema = graphene.Schema(query=QueryPerson)
-    result = schema.execute('''
-        {
+    result = schema.execute("""
+        query CreditCardQuery {
             me(name: "Stef") { firstName lastName}
             myBestFriend { firstName lastName }
             allCreditcards { budget }
         }
-    ''')
+    """)
     # With default resolvers we can resolve attributes from an object..
     assert result.data["me"] == {"firstName": "Stef", "lastName": "Skywalker"}
 
@@ -44,3 +44,14 @@ def test_query_person_data():
     assert result.data["myBestFriend"] == {"firstName": "R2", "lastName": "D2"}
 
     assert result.data["allCreditcards"] == [{"budget": 500}, {"budget": 900}, {"budget": 200}]
+
+# def test_create_creditcard():
+#     schema = graphene.Schema(query=QueryPerson, mutation=MutationCreditCard)
+
+#     result = schema.execute('''
+#         mutation {
+#             me(name: "Stef") { firstName lastName}
+#             myBestFriend { firstName lastName }
+#             allCreditcards { budget }
+#         }
+#     ''')
