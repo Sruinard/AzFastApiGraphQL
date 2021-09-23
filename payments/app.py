@@ -3,7 +3,27 @@ from .creditcard import CreditCardRepo, PaymentRequest
 import graphene
 from fastapi import FastAPI
 from starlette.graphql import GraphQLApp
+from collections import namedtuple
 
+from graphene import ObjectType, String, Field, Schema
+
+PersonValueObject = namedtuple("Person", ["first_name", "last_name"])
+
+class Person(ObjectType):
+    first_name = String()
+    last_name = String()
+
+class QueryPerson(ObjectType):
+    me = Field(Person, name=graphene.String())
+    my_best_friend = Field(Person)
+
+    def resolve_me(parent, info, name="Luke"):
+        # always pass an object for `me` field
+        return PersonValueObject(first_name=name, last_name="Skywalker")
+
+    def resolve_my_best_friend(parent, info):
+        # always pass a dictionary for `my_best_fiend_field`
+        return {"first_name": "R2", "last_name": "D2"}
 
 class Query(graphene.ObjectType):
     hello = graphene.String(name=graphene.String(default_value="stranger"))

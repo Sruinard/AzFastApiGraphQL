@@ -1,7 +1,8 @@
 from fastapi.testclient import TestClient
+import graphene
 
 from payments.creditcard import CreditCard
-from payments.app import app
+from payments.app import app, QueryPerson
 
 
 CLIENT = TestClient(app)
@@ -25,3 +26,18 @@ def test_graph_endpoint():
     """
     result = CLIENT.post("/graph", json={"query": query})
     assert "Hello" in result.json().get("data").get('hello')
+
+
+def test_query_person_data():
+    schema = graphene.Schema(query=QueryPerson)
+    result = schema.execute('''
+        {
+            me(name: "Stef") { firstName lastName}
+            myBestFriend { firstName lastName }
+        }
+    ''')
+    # With default resolvers we can resolve attributes from an object..
+    assert result.data["me"] == {"firstName": "Stef", "lastName": "Skywalker"}
+
+    # With default resolvers, we can also resolve keys from a dictionary..
+    assert result.data["myBestFriend"] == {"firstName": "R2", "lastName": "D2"}
