@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .creditcard import CreditCardObject, CreditCardRepo, PaymentRequest
+from .creditcard import CreditCardObject, CreditCardRepo, PaymentRequest, CreateCreditCard
 import graphene
 from fastapi import FastAPI
 from starlette.graphql import GraphQLApp
@@ -35,10 +35,12 @@ class Query(graphene.ObjectType):
     def resolve_hello(self, info, name):
         return "Hello " + name
 
+class MutationCreditCard(graphene.ObjectType):
+    create_creditcard = CreateCreditCard.Field()
 
-# app = FastAPI()
 app = FastAPI()
 app.add_route("/graph", GraphQLApp(schema=graphene.Schema(query=Query)))
+app.add_route("/creditcard", GraphQLApp(schema=graphene.Schema(query=Query, mutation=MutationCreditCard)))
 
 @app.get("/")
 def homepage():
