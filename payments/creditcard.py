@@ -24,21 +24,6 @@ class CreateCreditCard(graphene.Mutation):
         return CreateCreditCard(creditcard=creditcard)
 
 
-class PaymentRequest(BaseModel):
-    amount_to_deduct: int
-
-
-class CreditCard():
-
-    def __init__(self, budget, card_id):
-        self.budget = budget
-        self.card_id = card_id
-
-    def deduct(self, amount_to_deduct):
-        self.budget = self.budget - amount_to_deduct
-
-
-
 class CreditCardRepo:
 
     def __init__(self) -> None:
@@ -52,6 +37,6 @@ class CreditCardRepo:
         return self.items         
 
     def create(self, initial_budget):
-        new_creditcard = CreditCardObject(budget=initial_budget, card_id="z")
+        new_creditcard = CreditCardObject(budget=initial_budget, card_id="g")
         self.items.append(new_creditcard) 
         return new_creditcard 
