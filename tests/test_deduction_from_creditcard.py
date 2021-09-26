@@ -61,7 +61,7 @@ def test_create_creditcard():
             }
         }
     '''
-    result = CLIENT.post("/creditcard", json={"query": query}).json()
+    result = CLIENT.post("/graphql", json={"query": query}).json()
     assert result["data"]["createCreditcard"]['creditcard'] == {"budget": 0, "cardId": "z"}
 
 def test_create_creditcard():
@@ -73,7 +73,7 @@ def test_create_creditcard():
                 } 
         }
     '''
-    result = CLIENT.post("/creditcard", json={"query": query}).json()
+    result = CLIENT.post("/graphql", json={"query": query}).json()
     assert result["data"]['creditcard'] == {"budget": 500, "cardId": "a"}
 
 
@@ -92,7 +92,7 @@ def test_create_creditcard():
             }
         }
     '''
-    result = CLIENT.post("/creditcard", json={"query": query}).json()
+    result = CLIENT.post("/graphql", json={"query": query}).json()
     assert result["data"]["makePayment"]['senderCard'] == {"budget": 480, "cardId": "a"}
     assert result["data"]["makePayment"]['receiverCard'] == {"budget": 920, "cardId": "b"}
 

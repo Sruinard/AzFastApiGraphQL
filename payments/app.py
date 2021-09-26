@@ -13,7 +13,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.add_route("/creditcard", GraphQLApp(schema=graphene.Schema(query=Query, mutation=Mutation)))
+app.add_route("/graphql", GraphQLApp(schema=graphene.Schema(query=Query, mutation=Mutation)))
 
 @app.get("/")
 def homepage():
