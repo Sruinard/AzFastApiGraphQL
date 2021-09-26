@@ -1,5 +1,5 @@
 import graphene
-from .creditcard import CreditCardObject, CreditCardRepo, CreateCreditCard
+from .creditcard import CreditCardObject, CreditCardRepo, CreateCreditCard, MakePayment
 
 class Query(graphene.ObjectType):
     all_creditcards = graphene.List(CreditCardObject)
@@ -13,3 +13,4 @@ class Query(graphene.ObjectType):
 
 class Mutation(graphene.ObjectType):
     create_creditcard = CreateCreditCard.Field()
+    make_payment = MakePayment.Field()
