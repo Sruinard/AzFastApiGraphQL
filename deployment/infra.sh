@@ -2,7 +2,7 @@
 
 # DECLARE
 ## general
-RESOURCE_GROUP="raboapim"
+RESOURCE_GROUP="graphql_webapp"
 LOCATION="westeurope"
 
 
