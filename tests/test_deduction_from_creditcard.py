@@ -2,7 +2,9 @@ from fastapi.testclient import TestClient
 import graphene
 import pytest
 from payments.app import app, Query
-from payments.creditcard import Payment, PaymentsSystem, CreditCardObject, CreditRepoInterface
+from payments.repo import CreditRepoInterface
+from payments.creditcard import Payment, PaymentsSystem
+from payments.entities import CreditCardObject
 
 @pytest.fixture
 def creditcard_repo():

@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import graphene
 from starlette.graphql import GraphQLApp
-from payments.schema import Query, Mutation
+from payments.query import Query
+from payments.mutation import Mutation
 import uvicorn
 
 app = FastAPI()
