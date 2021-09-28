@@ -1,2 +1,4 @@
 fastapi[all]
 uvicorn[standard]
+graphene-pydantic==0.2.0
+SQLAlchemy==1.4.25

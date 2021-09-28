@@ -1,5 +1,6 @@
 from typing import List
 from payments.entities import CreditCardObject
+import payments.models as models
 
 ITEMS = [CreditCardObject(card_id=card_id, budget=budget) for card_id, budget in list(zip(["a", "b", "c"], [500, 900, 200]))]
 
@@ -42,3 +43,20 @@ class CreditCardRepoImpl(CreditRepoInterface):
                 if item_to_update.card_id == item.card_id:
                     ITEMS[index] = item_to_update
         return items
+
+class CreditCardRepoSQLImpl(CreditRepoInterface):
+
+    def __init__(self, session):
+        self.session = session
+
+    def get(self, id):
+        self.session.query(models.CreditCard).filter(models.CreditCard.id == id).first()
+        self.session.commit()
+
+    def add(self, card: CreditCardObject):
+        creditcard = models.CreditCard(**card.dict())
+        self.session.add(creditcard)
+        self.session.commit()
+        return creditcard
+
+

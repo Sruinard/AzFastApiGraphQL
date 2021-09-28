@@ -2,9 +2,10 @@ from fastapi.testclient import TestClient
 import graphene
 import pytest
 from payments.app import app, Query
-from payments.repo import CreditRepoInterface
+from payments.repo import CreditRepoInterface, CreditCardRepoSQLImpl
 from payments.creditcard import Payment, PaymentsSystem
-from payments.entities import CreditCardObject
+from payments.entities import CreditCardObject, CreditCardEntity
+from payments.database import get_db
 
 @pytest.fixture
 def creditcard_repo():
@@ -34,6 +35,10 @@ def creditcard_repo():
             return items
 
     return CreditCardRepoImpl()
+
+@pytest.fixture
+def creditcard_repo_sql():
+   return CreditCardRepoSQLImpl(session=get_db()) 
 
 CLIENT = TestClient(app)
 
@@ -110,3 +115,9 @@ def test_add_creditcard(creditcard_repo: CreditRepoInterface):
     card = CreditCardObject(budget=20, card_id='z')
     creditcard_repo.add(card)
     assert len(creditcard_repo.get_all()) == 4
+
+def test_add_creditcard_to_database(creditcard_repo_sql: CreditRepoInterface):
+    creditcard = CreditCardEntity(budget=100)
+    creditcard = creditcard_repo_sql.add(card=creditcard)
+    assert creditcard.id is not None
+    assert creditcard.budget == 100
