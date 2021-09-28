@@ -50,8 +50,12 @@ class CreditCardRepoSQLImpl(CreditRepoInterface):
         self.session = session
 
     def get(self, id):
-        self.session.query(models.CreditCard).filter(models.CreditCard.id == id).first()
-        self.session.commit()
+        card = self.session.query(models.CreditCard).filter(models.CreditCard.id == id).first()
+        return card
+    
+    def get_all(self):
+        cards = self.session.query(models.CreditCard).all()
+        return cards
 
     def add(self, card: CreditCardObject):
         creditcard = models.CreditCard(**card.dict())
