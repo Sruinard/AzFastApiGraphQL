@@ -63,4 +63,8 @@ class CreditCardRepoSQLImpl(CreditRepoInterface):
         self.session.commit()
         return creditcard
 
+    def update_all(self, items: List[models.CreditCard]):
+        cards = self.session.bulk_save_objects(items)
+        self.session.commit()
+        return cards
 

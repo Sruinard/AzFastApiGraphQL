@@ -1,12 +1,13 @@
-from fastapi.testclient import TestClient
 import graphene
 import pytest
-from payments.app import app, Query
-from payments.repo import CreditRepoInterface, CreditCardRepoSQLImpl
+from fastapi.testclient import TestClient
+from payments.app import Query, app
 from payments.creditcard import Payment, PaymentsSystem
-from payments.entities import CreditCardObject, CreditCardEntity
-from payments.database import get_db
-from payments.database import Base, engine
+from payments.database import Base, engine, get_db
+from payments.entities import CreditCardEntity, CreditCardObject
+from payments.repo import CreditCardRepoSQLImpl, CreditRepoInterface
+
+CLIENT = TestClient(app)
 
 @pytest.fixture
 def creditcard_repo():
@@ -37,13 +38,6 @@ def creditcard_repo():
 
     return CreditCardRepoImpl()
 
-@pytest.fixture
-def creditcard_repo_sql(): 
-    Base.metadata.create_all(bind=engine)
-    yield CreditCardRepoSQLImpl(session=get_db()) 
-    Base.metadata.drop_all(bind=engine)
-
-CLIENT = TestClient(app)
 
 def test_api_endpoint_is_available():
     response = CLIENT.get('/')
@@ -118,16 +112,3 @@ def test_add_creditcard(creditcard_repo: CreditRepoInterface):
     card = CreditCardObject(budget=20, card_id='z')
     creditcard_repo.add(card)
     assert len(creditcard_repo.get_all()) == 4
-
-def test_add_creditcard_sql(creditcard_repo_sql: CreditRepoInterface):
-    card = CreditCardEntity(budget=20)
-    creditcard_repo_sql.add(card)
-    card = CreditCardEntity(budget=20)
-    creditcard_repo_sql.add(card)
-    assert len(creditcard_repo_sql.get_all()) == 2
-
-def test_add_creditcard_to_database(creditcard_repo_sql: CreditRepoInterface):
-    creditcard = CreditCardEntity(budget=100)
-    creditcard = creditcard_repo_sql.add(card=creditcard)
-    assert creditcard.id is not None
-    assert creditcard.budget == 100

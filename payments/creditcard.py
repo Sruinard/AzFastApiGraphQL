@@ -14,10 +14,8 @@ class PaymentsSystem:
         
     def make_payment(self, payment: Payment):
         receiver = self.repo.get(payment.card_receiver_id)
-        receiver.add_payment(amount=-payment.amount)
+        receiver.budget += payment.amount
         sender = self.repo.get(payment.card_sender_id)
-        sender.add_payment(amount=payment.amount)
+        sender.budget -= payment.amount
         self.repo.update_all([sender, receiver])
         return payment
-
-    
