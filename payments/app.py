@@ -4,7 +4,7 @@ import graphene
 from starlette.graphql import GraphQLApp
 from payments.query import Query
 from payments.mutation import Mutation
-from payments.database import Base, engine
+from payments.orm import Base, engine
 import uvicorn
 
 Base.metadata.create_all(bind=engine)

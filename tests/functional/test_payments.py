@@ -3,7 +3,7 @@ import pytest
 from fastapi.testclient import TestClient
 from payments.app import Query, app
 from payments.creditcard import Payment, PaymentsSystem
-from payments.database import Base, engine, get_db
+from payments.orm import Base, engine, get_db
 from payments.entities import CreditCardEntity, CreditCardObject
 from payments.repo import CreditCardRepoSQLImpl, CreditRepoInterface
 

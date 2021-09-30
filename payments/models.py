@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 
-from payments.database import Base
+from payments.orm import Base
 
 class CreditCard(Base):
     __tablename__ = "creditcard"
